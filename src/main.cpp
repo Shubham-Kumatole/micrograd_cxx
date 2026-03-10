@@ -1,5 +1,5 @@
 
-#include "MultiLayerPerceptron.cpp"
+#include "MultiLayerPerceptron.h"
 
 int main(){
     MLP m = MLP(3, {4,4,1});

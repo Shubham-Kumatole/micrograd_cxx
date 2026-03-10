@@ -8,8 +8,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Source files - list explicitly to avoid GLOB pitfalls
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/Value.cpp
+    src/Neuron.cpp
+    src/Layer.cpp
+    src/MultiLayerPerceptron.cpp
 )
-
 # Your own headers in include/
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/include
