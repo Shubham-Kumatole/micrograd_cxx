@@ -1,5 +1,7 @@
 #include "Value.h"
 #include <cmath>
+#include <memory>
+#include <vector>
 
 Val operator+(Val a, Val b) {
   auto out =
@@ -97,6 +99,16 @@ Val tanh(Val a) {
   double t = std::tanh(a->data);
   Val out = std::make_shared<Value>(t, std::vector<Val>{a}, "tanh(x)", "");
   out->backward = [a, t, out]() { a->grad += (1.0 - pow(t, 2)) * out->grad; };
+  return out;
+}
+
+const std::vector<Val>& make_vector(std::vector<double> x){
+  std::vector<Val>* tmp = new std::vector<Val>(x.size());
+  std::vector<Val> &out = *tmp;
+  size_t idx = 0;
+  for(auto &a: x){
+    out[idx++] = std::make_shared<Value>(a); 
+  }
   return out;
 }
 

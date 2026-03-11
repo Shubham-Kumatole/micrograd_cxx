@@ -2,7 +2,7 @@
 
 
 MLP::MLP(size_t num_inputs, std::vector<size_t> layer_dimensions){
-    layers = std::vector<Layer>(1 + layer_dimensions.size());
+    layers = std::vector<Layer>(layer_dimensions.size());
     if(layers.size() >= 2){
         layers[0] = std::make_shared<ILayer>(num_inputs, layer_dimensions[0]);
         size_t num_weights = layer_dimensions[0];
