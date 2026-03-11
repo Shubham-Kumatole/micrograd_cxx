@@ -6,14 +6,14 @@ class ILayer: public Module {
 public:
     std::vector<Neuron> neurons;
     ILayer(size_t num_weights, size_t num_neurons);
-    const std::vector<Val>& parameters() override{
-        std::vector<Val>* out = new std::vector<Val>();
-        for(auto& neuron: neurons){
-            const std::vector<Val>& params = neuron->parameters();
-            (*out).insert(end(*out), begin(params), end(params));
+    std::vector<Val> parameters() override {
+        std::vector<Val> out;
+        for(auto& neuron : neurons){
+            auto params = neuron->parameters();
+            out.insert(out.end(), params.begin(), params.end());
         }
-        return *out;
-    }
+        return out;
+    }   
 
     std::vector<Val> operator()(std::vector<Val> x);
 

@@ -102,12 +102,10 @@ Val tanh(Val a) {
   return out;
 }
 
-const std::vector<Val>& make_vector(std::vector<double> x){
-  std::vector<Val>* tmp = new std::vector<Val>(x.size());
-  std::vector<Val> &out = *tmp;
-  size_t idx = 0;
+std::vector<Val> make_vector(std::vector<double> x){
+  std::vector<Val> out;
   for(auto &a: x){
-    out[idx++] = std::make_shared<Value>(a); 
+    out.push_back(std::make_shared<Value>(a)); 
   }
   return out;
 }

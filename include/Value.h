@@ -33,7 +33,7 @@ Val tanh(Val a);
 Val exp(Val a);
 void TopoSort(Val a, std::vector<Val> &sorted, std::unordered_map<Val, bool> &visited) ;
 void backPropogate(Val self);
-const std::vector<Val>& make_vector(std::vector<double> x);
+std::vector<Val> make_vector(std::vector<double> x);
 Val operator+(Val a, Val b);
 Val operator-(Val a, Val b);
 Val operator-(Val a, double b);

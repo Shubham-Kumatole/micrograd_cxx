@@ -12,13 +12,10 @@ class INeuron : public Module {
         static std::uniform_real_distribution<double> dist(-1.0, 1.0);
         return dist(rng);
     }
-    const std::vector<Val>& parameters() override{
-       std::vector<Val>* out = new std::vector<Val>(weights.size() + 1);
-        (*out)[out->size()-1] = bias;
-        for(size_t i = 0; i < weights.size(); i++){
-            (*out)[i] = weights[i];
-        }
-        return *out;
+    std::vector<Val> parameters() override {
+        std::vector<Val> out(weights.begin(), weights.end());
+        out.push_back(bias);
+        return out;
     }
     static std::shared_ptr<INeuron> make(size_t num_weights = 0){
         return std::make_shared<INeuron>(num_weights);

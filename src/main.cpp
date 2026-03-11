@@ -11,7 +11,7 @@ int main(){
             {0.5, 1.0, 1.0},
             {1.0, 1.0, -1.0},
     };
-    const std::vector<Val>& ys = make_vector({1.0, -1.0, -1.0, 1.0});
+    const std::vector<Val> ys = make_vector({1.0, -1.0, -1.0, 1.0});
     std::vector<std::vector<Val>>  xs(xx.size());
     for(size_t i = 0; i < xx.size(); i++){
         xs[i] = make_vector(xx[i]);
