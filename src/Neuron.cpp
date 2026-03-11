@@ -15,7 +15,7 @@ Val INeuron::operator()(std::vector<Val> x){
     for(size_t i = 0; i < x.size(); i++){
         activation =  activation + weights[i] * x[i];
     }
-    return tanh(activation);
+    return tanh(activation + bias);
 }
     
 
