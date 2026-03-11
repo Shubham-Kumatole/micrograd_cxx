@@ -16,18 +16,21 @@ int main(){
     for(size_t i = 0; i < xx.size(); i++){
         xs[i] = make_vector(xx[i]);
     }
-    for(int i = 0; i < 20; i++){
+    for(int i = 0; i < 100; i++){
+        double learning_rate = i<75 ? 0.5 : 0.01;
         Val loss = std::make_shared<Value>(0.0);
+        std::vector<Val> ypred;
         for(size_t idx = 0; idx < xs.size(); idx++){
-            auto ypred = m(xs[idx]);
-            loss = loss + (ypred[0] - ys[idx])^2;
+            ypred = m(xs[idx]);
+            loss = loss + ((ypred[0] - ys[idx])^2);
+            printf("\n Prediction : \n ypred = %lf, ys[idx] = %lf\n", ypred[0]->data, ys[idx]->data);
         }
         m.zeroGrad();
         backPropogate(loss);
         for(auto &p: m.parameters()){
-            p->data += -0.01 * p->grad;
+            p->data -= learning_rate * p->grad;
         }
-        printf("loss = %lf\n", loss->data);
+        printf("i = %d, loss = %0.12lf\n", i,loss->data);
     }
     return 0;
 }
