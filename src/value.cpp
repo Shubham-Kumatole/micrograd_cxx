@@ -6,7 +6,8 @@
 Val operator+(Val a, Val b) {
   auto out =
       std::make_shared<Value>(a->data + b->data, std::vector<Val>{a, b}, "+", "");
-  out->backward = [a, b, out]() {
+  out->backward = [a, b, weak_out = std::weak_ptr<Value>(out)]() {
+    auto out = weak_out.lock();
     a->grad += out->grad;
     b->grad += out->grad;
   };
@@ -16,7 +17,8 @@ Val operator+(Val a, Val b) {
 Val operator-(Val a, Val b) {
   auto out =
       std::make_shared<Value>(a->data - b->data, std::vector<Val>{a, b}, "-", "");
-  out->backward = [a, b, out]() {
+  out->backward = [a, b, weak_out = std::weak_ptr<Value>(out)]() {
+    auto out = weak_out.lock();
     a->grad += out->grad;
     b->grad += -1.0 * out->grad;
   };
@@ -46,7 +48,8 @@ Val operator+(double b, Val a) {
 Val operator*(Val a, Val b) {
   auto out =
       std::make_shared<Value>(a->data * b->data, std::vector<Val>{a, b}, "*", "");
-  out->backward = [a, b, out]() {
+  out->backward = [a, b, weak_out = std::weak_ptr<Value>(out)]() {
+    auto out = weak_out.lock();
     a->grad += b->data * out->grad;
     b->grad += a->data * out->grad;
   };
@@ -56,7 +59,8 @@ Val operator*(Val a, Val b) {
 Val operator^(Val a, double n) {
   auto out = std::make_shared<Value>((double)pow(a->data, n), std::vector<Val>{a},
                                      "**", "");
-  out->backward = [a, n, out]() {
+  out->backward = [a, n, weak_out = std::weak_ptr<Value>(out)]() {
+    auto out = weak_out.lock();
     a->grad += n * pow(a->data, n - 1) * out->grad;
   };
   return out;
@@ -65,7 +69,8 @@ Val operator^(Val a, double n) {
 Val operator^(Val a, int n) {
   auto out = std::make_shared<Value>((double)pow(a->data, n), std::vector<Val>{a},
                                      "**", "");
-  out->backward = [a, n, out]() {
+  out->backward = [a, n, weak_out = std::weak_ptr<Value>(out)]() {
+    auto out = weak_out.lock();
     a->grad += n * pow(a->data, n - 1) * out->grad;
   };
   return out;
@@ -91,14 +96,20 @@ Val operator*(int a, Val b) {
 Val exp(Val a) {
   double d = std::exp(a->data);
   auto out = std::make_shared<Value>(d, std::vector<Val>{a}, "e(x)", "");
-  out->backward = [a, d, out]() { a->grad += d * out->grad; };
+  out->backward = [a, d, weak_out = std::weak_ptr<Value>(out)]() { 
+    auto out = weak_out.lock();
+    a->grad += d * out->grad; 
+  };
   return out;
 }
 
 Val tanh(Val a) {
   double t = std::tanh(a->data);
   Val out = std::make_shared<Value>(t, std::vector<Val>{a}, "tanh(x)", "");
-  out->backward = [a, t, out]() { a->grad += (1.0 - pow(t, 2)) * out->grad; };
+  out->backward = [a, t, weak_out = std::weak_ptr<Value>(out)]() { 
+    auto out = weak_out.lock();
+    a->grad += (1.0 - pow(t, 2)) * out->grad; 
+  };
   return out;
 }
 
